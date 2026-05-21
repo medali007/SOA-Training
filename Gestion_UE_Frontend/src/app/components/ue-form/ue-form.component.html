@@ -1,0 +1,109 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">{{ isEditing ? '✏️ Éditer l\'UE' : '➕ Ajouter une UE' }}</h2>
+        </div>
+
+        <div class="card-body">
+          <div *ngIf="success" class="alert alert-success">
+            ✅ Opération réussie! Redirection en cours...
+          </div>
+
+          <div *ngIf="error" class="alert alert-danger">
+            ❌ {{ error }}
+          </div>
+
+          <form [formGroup]="ueForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="code" class="form-label">Code</label>
+              <input
+                type="number"
+                class="form-control"
+                id="code"
+                formControlName="code"
+                [class.is-invalid]="ueForm.get('code')?.invalid && ueForm.get('code')?.touched"
+              />
+              <div class="invalid-feedback" *ngIf="ueForm.get('code')?.invalid && ueForm.get('code')?.touched">
+                Le code est requis et doit être un nombre valide
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="domaine" class="form-label">Domaine</label>
+              <input
+                type="text"
+                class="form-control"
+                id="domaine"
+                formControlName="domaine"
+                [class.is-invalid]="ueForm.get('domaine')?.invalid && ueForm.get('domaine')?.touched"
+              />
+              <div class="invalid-feedback" *ngIf="ueForm.get('domaine')?.invalid && ueForm.get('domaine')?.touched">
+                Le domaine est requis et doit contenir au moins 3 caractères
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="responsable" class="form-label">Responsable</label>
+              <input
+                type="text"
+                class="form-control"
+                id="responsable"
+                formControlName="responsable"
+                [class.is-invalid]="ueForm.get('responsable')?.invalid && ueForm.get('responsable')?.touched"
+              />
+              <div class="invalid-feedback" *ngIf="ueForm.get('responsable')?.invalid && ueForm.get('responsable')?.touched">
+                Le responsable est requis et doit contenir au moins 3 caractères
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="credits" class="form-label">Crédits</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="credits"
+                  formControlName="credits"
+                  [class.is-invalid]="ueForm.get('credits')?.invalid && ueForm.get('credits')?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="ueForm.get('credits')?.invalid && ueForm.get('credits')?.touched">
+                  Les crédits doivent être entre 1 et 60
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="semestre" class="form-label">Semestre</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="semestre"
+                  formControlName="semestre"
+                  [class.is-invalid]="ueForm.get('semestre')?.invalid && ueForm.get('semestre')?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="ueForm.get('semestre')?.invalid && ueForm.get('semestre')?.touched">
+                  Le semestre doit être entre 1 et 8
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="loading"
+              >
+                {{ loading ? '⏳ Traitement...' : (isEditing ? '💾 Mettre à jour' : '💾 Ajouter') }}
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="cancel()" [disabled]="loading">
+                ❌ Annuler
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,127 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">{{ isEditing ? '✏️ Éditer le Module' : '➕ Ajouter un Module' }}</h2>
+        </div>
+
+        <div class="card-body">
+          <div *ngIf="success" class="alert alert-success">
+            ✅ Opération réussie! Redirection en cours...
+          </div>
+
+          <div *ngIf="error" class="alert alert-danger">
+            ❌ {{ error }}
+          </div>
+
+          <form [formGroup]="moduleForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="matricule" class="form-label">Matricule</label>
+              <input
+                type="text"
+                class="form-control"
+                id="matricule"
+                formControlName="matricule"
+                [class.is-invalid]="moduleForm.get('matricule')?.invalid && moduleForm.get('matricule')?.touched"
+              />
+              <div class="invalid-feedback" *ngIf="moduleForm.get('matricule')?.invalid && moduleForm.get('matricule')?.touched">
+                Le matricule est requis et doit contenir au moins 3 caractères
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="nom" class="form-label">Nom du Module</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nom"
+                formControlName="nom"
+                [class.is-invalid]="moduleForm.get('nom')?.invalid && moduleForm.get('nom')?.touched"
+              />
+              <div class="invalid-feedback" *ngIf="moduleForm.get('nom')?.invalid && moduleForm.get('nom')?.touched">
+                Le nom est requis et doit contenir au moins 3 caractères
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="coefficient" class="form-label">Coefficient</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="coefficient"
+                  formControlName="coefficient"
+                  [class.is-invalid]="moduleForm.get('coefficient')?.invalid && moduleForm.get('coefficient')?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="moduleForm.get('coefficient')?.invalid && moduleForm.get('coefficient')?.touched">
+                  Veuillez entrer un coefficient valide
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="volumeHoraire" class="form-label">Volume Horaire (h)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="volumeHoraire"
+                  formControlName="volumeHoraire"
+                  [class.is-invalid]="moduleForm.get('volumeHoraire')?.invalid && moduleForm.get('volumeHoraire')?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="moduleForm.get('volumeHoraire')?.invalid && moduleForm.get('volumeHoraire')?.touched">
+                  Veuillez entrer un volume horaire valide
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="type" class="form-label">Type de Module</label>
+              <select
+                class="form-select"
+                id="type"
+                formControlName="type"
+                [class.is-invalid]="moduleForm.get('type')?.invalid && moduleForm.get('type')?.touched"
+              >
+                <option value="PROFESSIONNEL">Professionnel</option>
+                <option value="TRANSVERSAL">Transversal</option>
+                <option value="RECHERCHE">Recherche</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="codeUE" class="form-label">Unité d'Enseignement</label>
+              <select
+                class="form-select"
+                id="codeUE"
+                formControlName="codeUE"
+                [class.is-invalid]="moduleForm.get('codeUE')?.invalid && moduleForm.get('codeUE')?.touched"
+              >
+                <option value="">-- Sélectionnez une UE --</option>
+                <option *ngFor="let ue of unitesEnseignement" [value]="ue.code">
+                  {{ ue.domaine }} (Code: {{ ue.code }})
+                </option>
+              </select>
+              <div class="invalid-feedback" *ngIf="moduleForm.get('codeUE')?.invalid && moduleForm.get('codeUE')?.touched">
+                Veuillez sélectionner une unité d'enseignement
+              </div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="loading"
+              >
+                {{ loading ? '⏳ Traitement...' : (isEditing ? '💾 Mettre à jour' : '💾 Ajouter') }}
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="cancel()" [disabled]="loading">
+                ❌ Annuler
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
